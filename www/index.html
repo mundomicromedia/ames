@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <link rel="stylesheet" type="text/css" href="css/toastr.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" href="./jquery_mobile/jquery.mobile-1.4.5.min.css">
+        <title>Concello de Ames</title>
+    </head>
+    <body>
+        
+        
+    <input type="hidden" id='idioma_seleccionado' value="">
+    <input type="hidden" id='id_actividad_participar'>
+    <input type="hidden" id='id_usuario_registrado' value="">
+    <input type="hidden" id='link_facebook'>
+    <input type="hidden" id='link_twitter'>
+    <input type="hidden" id='imagen_top'>
+    <input type="hidden" id='token_user'>
+    
+    <input type="hidden" id='id_categoria_seleccionada'>
+    <input type="hidden" id='id_subcategoria_seleccionada'>
+    
+
+<div id='div_loader' class="ui-loader ui-corner-all ui-body-a ui-loader-verbose">
+	<span class="ui-icon-loading"></span>
+</div>
+
+
+<script id="home-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		
+		<div id="cabecera_index">
+			<div id="cabecera_index_left">
+				<img src='img/logo.png'>
+			</div>
+			<div id="cabecera_index_right">
+				<img class='ir_a_colabora_inicio' src='img/colaboraBTN.png'>
+				<img class='ir_a_notificaciones' src='img/pushBTN.png'>
+				<img id='img_link_facebook' class='ir_a_facebook' src='img/facebook.png'>
+				<img id='img_link_twitter' class='ir_a_twitter' src='img/twitter.png'>
+			</div>
+		</div>
+
+		<div id="cabecera_home_index">
+			<div id="imagen_presentacion" class="imgset2"><img src="{{imagen_top}}" /></div>
+
+			<div id="falda_home">
+				<div id="falda_home_izda">
+					<span class='ir_a_gallego'>{{traduccion_en_gallego}}</span>
+				</div>
+				<div id="falda_home_dcha">
+					<span class='ir_a_castellano'>{{traduccion_en_castellano}}</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="cuerpo_home_index">
+
+			<table border="0" cellspacing="0" cellpadding="0" style='width: 100%;height: 100%; color: white;'>
+				<tr class='ir_a_colabora_inicio' style="background-color: #008A14;"> 
+					<td class='fila_nombre_index'>{{traduccion_colabora_con_tu_concejo}}</td>
+					<td><img class='flecha_go' src='./img/flechaGoHome.png' /></td>
+				</tr>
+	
+				<tr class='ir_a_presentacion' style="background-color: #007809;"> 
+					<td class='fila_nombre_index'>{{traduccion_presentacion}}</td>
+					<td><img class='flecha_go' src='./img/flechaGoHome.png' /></td>
+				</tr>
+
+				<tr class='ir_a_obras_y_servicios' style="background-color: #006001;"> 
+					<td class='fila_nombre_index'>{{traduccion_dpto_obras_y_servicios}}</td>
+					<td><img class='flecha_go' src='./img/flechaGoHome.png' /></td>
+				</tr>
+
+				<tr class='ir_a_contactos' style="background-color: #004B00;"> 
+					<td class='fila_nombre_index'>{{traduccion_contactos_de_interes}}</td>
+					<td><img class='flecha_go' src='./img/flechaGoHome.png' /></td>
+				</tr>
+
+				<tr class='ir_a_eventos' style="background-color: #003700;"> 
+					<td class='fila_nombre_index'>{{traduccion_eventos}}</td>
+					<td><img class='flecha_go' src='./img/flechaGoHome.png' /></td>
+				</tr>
+			</table>
+
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script id="presentacion-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_presentacion}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_presentacion_foto">
+			<div id="imagen_presentacion" class="imgset2"><img src="{{imagen_alcalde}}" /></div>
+			<div id="div_presentacion_foto_texto_contenedor">
+  				<div id="div_presentacion_foto_texto_contenido">
+					{{nombre_alcalde}}
+				</div>
+			</div>
+		</div>		
+
+		<div id="cuerpo_presentacion_texto">
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{texto}}}
+			</div>
+		</div>
+
+	</div>
+</div>
+</script>
+
+<script id="obras_y_servcios-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_obras">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_dpto_obras_y_servicios}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_presentacion_foto">
+			<div id="imagen_presentacion" class="imgset2"><img src="{{imagen_concejal}}" /></div>
+			<div id="div_presentacion_foto_texto_contenedor">
+  				<div id="div_presentacion_foto_texto_contenido">
+					{{nombre_concejal}}
+				</div>
+			</div>
+		</div>		
+
+		<div id="cuerpo_presentacion_texto">
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{texto}}}
+			</div>
+		</div>
+
+	</div>
+</div>
+</script>
+
+<script id="concellerias-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+	
+		<div id="cabecera_presentacion" style="background-color: #125C32;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_concejalias}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_contacto">
+
+			{{#each this.concellerias}}
+			<div id="cabecera_concellero" onclick="javascript:ir_a_opcion('#concelleria/{{id_concelleria}}');">
+				<div class="concellero_home_logo" id="concellero_home_logo_{{id_concelleria}}">
+					<div id="concellero_home_logo_imagen_{{id_concelleria}}" class="concellero_home_logo_imagen">
+						<img style='border-radius: 50%;' src='{{ imagen }}'>
+					</div>	
+					<div id="cabecera_concellero_nombre_nombre">
+					{{ nombre }}
+					</div>	
+				</div>
+			</div>
+			{{/each}} 
+			
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="concelleria-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		
+		<div id="cabecera_presentacion" style="background-color: #125C32; ">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_concelleria}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#concellerias');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cabecera_colabora">
+			<div id="cabecera_concelleria_img">
+				<img src='{{ imagen }}'>
+			</div>
+		</div>
+
+		<div id="div_nombre_concelleria">
+			<div id="div_nombre_concelleria_nombre">
+				{{traduccion_concelleria}} de {{ nombre }}
+			</div>
+		</div>
+
+		<div id="cuerpo_email_concellero">
+			<div id="logo_email_img">
+				<img src='./img/mail.png'>
+			</div>
+			<div id="logo_email_texto">
+				{{ email }}
+			</div>
+		</div>
+        
+		<div id="cuerpo_colabora" style='height: 45%;'>
+			<div id="cuerpo_colabora_texto_interior">
+				{{{ texto }}}
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script id="novas-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #125C32;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_noticias}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_novas">
+
+			{{#each this.novas}}
+
+			<div id="nova" style="background-color: #{{color}};" onclick="javascript:ir_a_opcion('#nova/{{id_nova}}/0');">
+				{{#if fecha}}
+				<div id="cabecera_nova_fecha">
+					<div id="cabecera_nova_fecha_texto">
+						{{fecha}}
+					</div>
+				</div>
+				{{/if}}
+				<div id="cabecera_nova_titulo">
+					<div id="cabecera_nova_titulo_texto">
+						{{{titulo}}}
+					</div>
+				</div>
+				<div id="cabecera_nova_texto">
+					<div id="cabecera_nova_texto_texto">
+						{{{entradilla}}}
+					</div>
+					<div id="triangulo_nova">
+					</div>
+				</div>
+			</div>
+
+			{{/each}} 
+			
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="nova-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #125C32;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_noticia}}&nbsp;&nbsp;&nbsp;&nbsp;{{num_nova_total}}
+			</div>
+			<div class='ir_a_novas' id='div_cabecera_presentacion_back'>
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cuerpo_presentacion_foto">
+			<div id="imagen_presentacion" class="imgset2"><img src="{{imagen}}" /></div>
+	
+			<div id="div_lugares_slider">
+				<div id="div_presentacion_foto_texto_contenido">
+					<div id='div_icono_flecha_ant' onclick="javascript:ir_a_opcion('#nova/{{id_nova}}/1');">
+						<img height="20px" src='./img/FlechaBack.png' />
+					</div>
+					<div id='div_icono_flecha_sig' onclick="javascript:ir_a_opcion('#nova/{{id_nova}}/2');">
+						<img height="20px" src='./img/flechaGo.png' />
+					</div>
+				</div>
+			</div>
+
+			<div id="div_presentacion_foto_texto_contenedor">
+				<div id="div_presentacion_foto_texto_contenido">
+					<div id='div_nombre_lugar'>
+						{{{titulo}}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="cuerpo_fecha_nova" style='height: 5%;'>
+			<div id="cuerpo_fecha_nova_texto_interior">
+				{{fecha_texto}}
+			</div>
+		</div>
+
+		<div id="cuerpo_presentacion_texto" style='height: 55%;'>
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{texto}}}
+			</div>
+		</div>
+
+	</div>
+</div>
+</script>
+
+<script id="convocatorias-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #050806;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_convocatorias}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_novas">
+
+			{{#each this.convocatorias}}
+
+			<div id="nova" style="background-color: #{{color}};" onclick="javascript:ir_a_opcion('#convocatoria/{{id_convocatoria}}');">
+				{{#if fecha}}
+				<div id="cabecera_nova_fecha">
+					<div id="cabecera_nova_fecha_texto">
+						{{fecha}}
+					</div>
+				</div>
+				{{/if}}
+				<div id="cabecera_nova_titulo">
+					<div id="cabecera_nova_titulo_texto">
+						{{{titulo}}}
+					</div>
+				</div>
+				<div id="cabecera_nova_texto">
+					<div id="cabecera_nova_texto_texto">
+						{{{entradilla}}}
+					</div>
+					<div id="triangulo_nova">
+					</div>
+				</div>
+			</div>
+
+			{{/each}} 
+			
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="convocatoria-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #050806;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_convocatoria}}&nbsp;&nbsp;&nbsp;&nbsp;{{num_convocatoria_total}}
+			</div>
+			<div class='ir_a_convocatorias' id='div_cabecera_presentacion_back'>
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+		<div id="cuerpo_presentacion_convocatoria_index">
+			<div id='div_icono_flecha_ant_convocatoria' onclick="javascript:ir_a_opcion('#convocatoria/{{id_convocatoria}}/1');">
+				<img height="20px" src='./img/FlechaBack.png' />
+			</div>
+			<div id="cuerpo_presentacion_convocatoria_index_titulo">
+  				{{{titulo}}}
+			</div>
+			<div id='div_icono_flecha_sig_convocatoria' onclick="javascript:ir_a_opcion('#convocatoria/{{id_convocatoria}}/2');">
+				<img height="20px" src='./img/flechaGo.png' />
+			</div>
+		</div>	
+
+		<div id="cuerpo_presentacion_texto" style='height: 83%; overflow: auto;'>
+			<div id="cuerpo_presentacion_texto_interior">
+				<div style='float:left; clear:both'>
+					{{{texto}}}
+				</div>					
+				{{#if tiene_documentacion}}
+					<div style='float:center; clear:both; width:100;'>
+						<div class='div_boton_docu_convocatoria' onclick="javascript:ir_a_opcion('#documentacion_convocatoria/{{id_convocatoria}}');">
+							{{traduccion_documentacion}}
+						</div>
+					</div>
+				{{/if}}
+			</div>
+		</div>
+
+	</div>
+</div>
+</script>
+
+<script id="documentacion_convocatoria-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #050806;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_convocatoria}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#convocatoria/{{id_convocatoria}}');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+		<div id="cuerpo_presentacion_convocatoria">
+			<div id="cuerpo_presentacion_convocatoria_titulo">
+  				{{traduccion_documentacion}}
+			</div>
+		</div>	
+
+		<div id="div_bases" style='height:83%;'>
+			<div id="cuerpo_presentacion_texto_interior">
+				{{#each this.archivos}}
+					<div id='archivo_documentacion'>
+						<div id='div_icono_archivo'>
+							<a onClick="OpenLink('{{archivo}}');"><img width="20px" height="20px" src='./img/archivo.png' /></a>
+						</div>
+						<div id='div_archivo'>
+							<a onClick="OpenLink('{{archivo}}');">{{{ titulo }}}</a>
+						</div>
+					</div>
+				{{/each}} 
+			</div>
+		</div>
+		
+	</div>
+</div>
+</script>
+
+
+<script id="contactos_enlaces-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #004B00;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_enlaces}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#contactos');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+		<div id="div_bases" style='height:83%;'>
+			<div id="cuerpo_presentacion_texto_interior">
+				{{#each this.enlaces}}
+					<div id='archivo_documentacion' style='width: 95%;'>
+					<div id='div_archivo' style="width: 100%; text-align: center;">
+						<a style='color: #125C32; cursor: pointer;' onClick="OpenLink('{{link}}');">{{ texto }}</a>
+					</div>
+					</div>
+				{{/each}} 
+			</div>
+		</div>
+		
+	</div>
+</div>
+</script>
+
+<script id="actividades-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+	
+		<div id="cabecera_presentacion" style="background-color: #012102;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_participa_en_las_actividades}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_contacto">
+
+			{{#each this.actividades}}
+			<div id='div_alto_concelleria'>
+
+			<div id='contacto_inicial_{{id_actividad}}' class="contacto" onmousedown="javascript:mostrar_datos_contacto({{id_actividad}});">
+				<div id="concelleria_texto">
+					{{nombre}}
+				</div>
+				<div id="contacto_imagen">
+					<div class="circulo">
+					</div>
+				</div>
+				<div id="contacto_derecha">
+					<div id="contacto_semicirculo">
+				
+					</div>
+				</div>
+			</div>
+			
+			<div id='contacto_oculto_{{id_actividad}}' class="contacto_oculto" style="display: none;">
+				<div id="contacto_imagen_2" onmousedown="javascript:ocultar_datos_contacto({{id_actividad}});">
+					{{nombre}}
+				</div>
+				<div id="contacto_derecha_2">
+					<div id="contacto_semicirculo" onmousedown="javascript:ocultar_datos_contacto({{id_actividad}});">
+					</div>
+				</div>
+				<div id="concelleria_texto_2">
+					<div id="div_btn_bases" onclick="javascript:ir_a_opcion('#bases/{{id_actividad}}');">
+						{{traduccion_bases}}
+					</div>
+					<div id="div_btn_participa" onclick="javascript:ir_a_opcion('#participa/{{id_actividad}}');">
+						{{traduccion_participa}}
+					</div>
+				</div>
+			</div>
+
+			</div>
+			{{/each}} 
+			
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script id="eventos-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #003700;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_eventos}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_novas">
+			
+			{{#each this.eventos}}
+
+			<div id="nova" style="background-color: #{{color}};" onclick="javascript:ir_a_opcion('#evento/{{id_evento}}/0');">
+				{{#if fecha}}
+				<div id="cabecera_nova_fecha">
+					<div id="cabecera_nova_fecha_texto">
+						{{fecha}}
+					</div>
+				</div>
+				{{/if}}
+				<div id="cabecera_nova_titulo">
+					<div id="cabecera_nova_titulo_texto">
+						{{{titulo}}}
+					</div>
+				</div>
+				<div id="cabecera_nova_texto">
+					<div id="cabecera_nova_texto_texto">
+						{{{entradilla}}}
+					</div>
+					<div id="triangulo_nova">
+					</div>
+				</div>
+			</div>
+
+			{{/each}} 
+
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="evento-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #003700;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_evento}}&nbsp;&nbsp;&nbsp;&nbsp;{{num_evento_total}}
+			</div>
+			<div class='ir_a_eventos' id='div_cabecera_presentacion_back'>
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		
+		<div id="cuerpo_presentacion_foto">
+			<div id="imagen_presentacion" class="imgset2"><img src="{{imagen}}" /></div>
+	
+			<div id="div_lugares_slider">
+				<div id="div_presentacion_foto_texto_contenido">
+					<div id='div_icono_flecha_ant' onclick="javascript:ir_a_opcion('#evento/{{id_evento}}/1');">
+						<img height="20px" src='./img/FlechaBack.png' />
+					</div>
+					<div id='div_icono_flecha_sig' onclick="javascript:ir_a_opcion('#evento/{{id_evento}}/2');">
+						<img height="20px" src='./img/flechaGo.png' />
+					</div>
+				</div>
+			</div>
+
+			<div id="div_presentacion_foto_texto_contenedor">
+				<div id="div_presentacion_foto_texto_contenido">
+					<div id='div_nombre_lugar'>
+						{{{titulo}}}
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div id="cuerpo_fecha_nova" style='height: 5%;'>
+			<div id="cuerpo_fecha_nova_texto_interior">
+				{{fecha_texto}}
+			</div>
+		</div>
+
+		<div id="cuerpo_presentacion_texto" style='height: 55%;'>
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{texto}}}
+			</div>
+		</div>
+		
+	</div>
+</div>
+</script>
+
+<script id="contactos-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+	
+		<div id="cabecera_presentacion" style="background-color: #004B00;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_contactos_de_interes}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_contacto">
+
+			<div id='contacto_enaces_externos' style='background-color:#003213;margin-bottom:7px;margin-top:5px;' class="contacto" onclick="javascript:ir_a_opcion('#contactos_enlaces');">
+				<div id="contacto_imagen" style="width: 30%; text-align:center;border:1px solid #003213;">
+					<img src="./img/contacto_enlaces.png" width="50">
+				</div>
+				<div id="contacto_texto" style="width: 50%">
+					{{traduccion_enlaces}}
+				</div>
+			</div>
+
+			{{#each this.contactos}}
+			<div id='div_alto_contacto'>
+
+			<div id='contacto_inicial_{{id_contacto_interes}}' class="contacto" onmousedown="javascript:mostrar_datos_contacto({{id_contacto_interes}});">
+				<div id="contacto_texto">
+					{{nombre}}
+				</div>
+				<div id="contacto_imagen">
+					<img src="{{imagen}}" width="50">
+				</div>
+				<div id="contacto_derecha">
+					<div id="contacto_semicirculo">
+				
+					</div>
+				</div>
+			</div>
+			
+			<div id='contacto_oculto_{{id_contacto_interes}}' class="contacto_oculto" style="display: none;">
+				<div id="contacto_imagen_2" onmousedown="javascript:ocultar_datos_contacto({{id_contacto_interes}});">
+					<img src="{{imagen}}" width="50">
+				</div>
+				<div id="contacto_derecha_2" onmousedown="javascript:ocultar_datos_contacto({{id_contacto_interes}});">
+					<div id="contacto_semicirculo">
+					</div>
+				</div>
+				
+				{{#if link}}
+					<div id="contacto_texto_2_con_link" onmousedown="javascript:ocultar_datos_contacto({{id_contacto_interes}});">
+						{{nombre}}<br>
+						{{telefono}}
+					</div>
+					<div id="contacto_link">
+						<a onClick="OpenLink('{{link}}');"><img width="40" src='./img/link_contacto.png' /></a>
+					</div>
+				{{else}}
+					<div id="contacto_texto_2" onmousedown="javascript:ocultar_datos_contacto({{id_contacto_interes}});">
+						{{nombre}}<br>
+						{{telefono}}
+					</div>
+				{{/if}} 
+			</div>
+
+			</div>
+			{{/each}} 
+			
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="visitar-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color:#132B15;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_que_visitar}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cuerpo_presentacion_foto">
+        	<div id="imagen_presentacion" class="imgset2"><img src="{{imagen}}" /></div>
+			
+			<div id="div_lugares_slider">
+  				<div id="div_presentacion_foto_texto_contenido">
+					<div id='div_icono_flecha_ant' onclick="javascript:ir_a_opcion('#visitar/{{id_lugar}}/1');">
+						<img height="20px" src='./img/FlechaBack.png' />
+					</div>
+					<div id='div_icono_flecha_sig' onclick="javascript:ir_a_opcion('#visitar/{{id_lugar}}/2');">
+						<img height="20px" src='./img/flechaGo.png' />
+					</div>
+				</div>
+			</div>
+
+			<div id="div_presentacion_foto_texto_contenedor">
+  				<div id="div_presentacion_foto_texto_contenido">
+					<div id='div_nombre_lugar'>
+						{{nombre}}
+					</div>
+					<div id='div_icono_ver_mapa' onclick="javascript:ir_a_opcion('#mapa/{{id_lugar}}');">
+						<img height="20px" src='./img/Geolocalizacion.png' />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="cuerpo_presentacion_texto">
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{texto}}}
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="mapa-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color:#132B15;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_que_visitar}}
+			</div>
+			<div id='div_cabecera_presentacion_back'>
+				<a href='#visitar/{{id_lugar}}'><img width="20px" height="20px" src='./img/FlechaBackTop.png' /></a>
+			</div>
+		</div>
+		<div id="cuerpo_home_mapa">
+			{{{iframe_mapa}}}
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script id="colaborainicio-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008A14; ">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_colabora_con_tu_concejo}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cabecera_colabora">
+			<div id="cabecera_home_logo">
+				<img src='./img/logoverde.png' width="157" height="162">
+			</div>
+            <div id="cabecera_home_btn">
+				<a href="#colabora"><img src='img/colaboraBTN.png' width="62" height="66"></a>
+				<a href="#notificaciones"><img src='img/pushBTN.png' width="65" height="66"></a>
+			</div>        
+		</div>
+        
+		<div id="cuerpo_colabora_inicio">
+
+			<div id="btn_inicio_colabora">
+
+				<div style='cursor:pointer;' id="btn_login">
+					<div class='ir_a_colabora_login' id="btn_login_texto">
+						{{traduccion_login}}
+					</div>
+				</div>
+
+				<div style='cursor:pointer;' id="btn_login">
+					<div class='ir_a_colabora_registrarse' id="btn_login_texto">
+						{{traduccion_registrarse}}
+					</div>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="colaboralogin-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008A14; ">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_colabora_con_tu_concejo}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#colaborainicio');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cabecera_colabora">
+			<div id="cabecera_home_logo">
+				<img src='./img/logoverde.png' width="157" height="162">
+			</div>
+            <div id="cabecera_home_btn">
+				<a href="#colabora"><img src='img/colaboraBTN.png' width="62" height="66"></a>
+				<a href="#notificaciones"><img src='img/pushBTN.png' width="65" height="66"></a>
+			</div>        
+		</div>
+        
+		<div id="cuerpo_colaboralogin_inicio">
+
+			<div id="colaboralogin_campos">
+
+				<div id="colaboralogin_campos_izda">
+			
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="text" value="" id='email' placeholder="{{traduccion_email}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/email.png' />
+						</div>
+					</div>
+			
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="password" id='contrasena' value="" placeholder="{{traduccion_contrasena}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/contrasena.png' />
+						</div>
+					</div>
+
+					<div style='cursor:pointer;' id="colaboralogin_recordar_contrasena" onclick="javascript:ir_a_opcion('#recordar_contrasena');">
+						<div id="colaboralogin_recordar_contrasena_icono">
+							<img src='./img/recordar_pass.png' />
+						</div>
+						<div id="colaboralogin_recordar_contrasena_texto">
+							{{traduccion_recordar_contrasena}}
+						</div>
+					</div>
+			
+				</div>
+		
+				<div id="colaboralogin_campos_dcha">
+					<div class='comprobar_usuario' id="colaboralogin_campos_dcha_btn">
+						<img width="30%" src='./img/enviar.png' />
+					</div>
+				</div>
+		
+			</div>
+	
+		</div>
+	</div>
+</div>
+</script>
+
+
+<script id="recordarcontrasena-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008A14; ">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_colabora_con_tu_concejo}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#colaborainicio');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cabecera_colabora">
+			<div id="cabecera_home_logo">
+				<img src='./img/logoverde.png' width="157" height="162">
+			</div>
+		</div>
+        
+		<div id="cuerpo_colaboralogin_inicio" style='height: 45%;'>
+
+			<div id="colaboralogin_campos">
+
+				<div id="cuerpo_colaboralogin_inicio" style='height: 25%;'>
+					<div id="texto_explicacion_recordar">
+						{{traduccion_explicacion_recordar}}
+					</div>
+				</div>
+
+				<div id="colaboralogin_campos_izda" style='width: 100%;'>
+			
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="text" id='email_recordar' placeholder="{{traduccion_email}}">
+						</div>
+					</div>
+
+					<div style='cursor:pointer;' class='recordar_pass' id="colaborarecordar_enviar">
+						<div id="colaborarecordar_enviar_texto">
+							{{traduccion_enviar}}
+						</div>
+					</div>
+			
+				</div>
+		
+			</div>
+	
+		</div>
+		
+	</div>
+</div>
+</script>
+
+
+<script id="colaboraregistrarse-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008A14; ">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_colabora_con_tu_concejo}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#colaborainicio');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cabecera_colabora">
+			<div id="cabecera_home_logo">
+				<img src='./img/logoverde.png' width="157" height="162">
+			</div>
+            <div id="cabecera_home_btn">
+				<a href="#colabora"><img src='img/colaboraBTN.png' width="62" height="66"></a>
+				<a href="#notificaciones"><img src='img/pushBTN.png' width="65" height="66"></a>
+			</div>        
+		</div>
+        
+		<div id="cuerpo_colaboralogin_inicio">
+
+			<div id="colaboralogin_campos">
+
+				<div id="colaboralogin_campos_izda">
+			
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="text" id='nombre' placeholder="{{traduccion_nombre}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/nombre.png' />
+						</div>
+					</div>
+			
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="text" id='telefono' placeholder="{{traduccion_telefono}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/telefono.png' />
+						</div>
+					</div>
+	
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="text" id='email' placeholder="{{traduccion_email}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/email.png' />
+						</div>
+					</div>
+
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="password" id='contrasena' placeholder="{{traduccion_contrasena}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/contrasena.png' />
+						</div>
+					</div>
+	
+					<div id="colaboralogin_campos_izda_campo">
+						<div id="colaboralogin_campos_izda_campo_div_input">
+							<input type="password" id='contrasena_2' placeholder="{{traduccion_repetir_contrasena}}">
+						</div>
+						<div id="colaboralogin_campos_izda_campo_div_img">
+							<img src='./img/contrasena.png' />
+						</div>
+					</div>
+			
+				</div>
+
+				<div id="colaboralogin_campos_dcha" style='height: 257px;'>
+					<div class='registrar_usuario' id="colaboralogin_campos_dcha_btn">
+						<img width="30%" src='./img/enviar.png' />
+					</div>
+				</div>
+		
+		
+			</div>
+	
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="colabora-tpl" type="text/x-handlebars-template">
+
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008A14; ">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_colabora_con_tu_concejo}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+
+
+		<div id="cabecera_colabora">
+			<div id="cabecera_home_logo">
+				<img src='./img/logoverde.png' width="157" height="162">
+			</div>
+		</div>
+
+		<div id="cuerpo_colabora">
+		
+			<div id="cuerpo_colabora_texto_interior_texto">
+				{{traduccion_texto_introductorio}}<br /><br />
+			</div>
+
+			
+			<div id="colabora_clasificacion">
+				<div id="colabora_clasificacion_categorias" class='abrir_categorias'>
+					<a class="fancybox-effects-b" id='link_dialog_categorias' href='#dialog-form-categorias' >
+						<input type='hidden' id='traduccion_selecciona_una_categoria' value='{{traduccion_selecciona_una_categoria}}' />
+						<span id='texto_categoria_seleccionada'>{{traduccion_selecciona_una_categoria}}</span>
+					</a>
+				</div>
+				<div id="colabora_clasificacion_subcategorias" class='abrir_subcategorias'>
+					<a class="fancybox-effects-b" id='link_dialog_subcategorias' href='#dialog-form-subcategorias' >
+						<input type='hidden' id='traduccion_selecciona_una_subcategoria' value='{{traduccion_selecciona_una_subcategoria}}' />
+						<span id='texto_subcategoria_seleccionada'>{{traduccion_selecciona_una_subcategoria}}</span>
+					</a>
+				</div>
+			</div>
+
+			<div id="cuerpo_colabora_texto_interior">
+				<div id="cuerpo_colabora_texto_interior_caja">
+					<form enctype="multipart/form-data" id="formuploadajax" name="formuploadajax" method="post">
+						<input id='id_servicio' type="hidden" value="" />
+						<input id='foto_data_1' type="hidden" value="" />
+						<input id='foto_data_2' type="hidden" value="" />
+						<input id='foto_data_3' type="hidden" value="" />
+						<input id='foto_data_4' type="hidden" value="" />
+						<input id='foto_data_5' type="hidden" value="" />
+						<input id='foto_data_6' type="hidden" value="" />
+						<input id='foto_data_7' type="hidden" value="" />
+						<input id='foto_data_8' type="hidden" value="" />
+						<input id='foto_data_9' type="hidden" value="" />
+						<input id='foto_data_10' type="hidden" value="" />
+						<textarea class='textarea-colabora' placeholder="{{traduccion_escribe_tu_cometario}}" id='texto' rows="6"></textarea>
+					</form>
+				</div>
+			</div>
+			<div id="cuerpo_colabora_texto_interior">
+				<div id="cuerpo_colabora_texto_interior_btn_camara">
+					<span class="capturarImagenBtn">
+						<img width="50px" src='./img/fotoBTN.png' />
+					</span>
+				</div>
+				<div id="cuerpo_colabora_texto_interior_btn_camara">
+					<span class="capturarImagenGaleriaBtn">
+						<img width="50px" src='./img/galeriaBTN.png' />
+					</span>
+				</div>
+				<div id="cuerpo_colabora_texto_interior_btn_camara">
+					<span class="enviarColaboraBtn">
+						<img width="50px" src='./img/enviarBTN.png' />
+					</span>
+				</div>
+			</div>
+			<div id="cuerpo_imagenes">
+
+				<div class='div_foto' id="div_foto_1">
+					<a class='fancybox-effects-b' id='ampliar_1'><div class='foto' id="foto_1"><img id='img_1'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_1' onclick="javascript:eliminarFoto(1);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_2">
+					<a class='fancybox-effects-b' id='ampliar_2'><div class='foto' id="foto_2"><img id='img_2'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_2' onclick="javascript:eliminarFoto(2);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_3">
+					<a class='fancybox-effects-b' id='ampliar_3'><div class='foto' id="foto_3"><img id='img_3'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_3' onclick="javascript:eliminarFoto(3);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_4">
+					<a class='fancybox-effects-b' id='ampliar_4'><div class='foto' id="foto_4"><img id='img_4'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_4' onclick="javascript:eliminarFoto(4);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_5">
+					<a class='fancybox-effects-b' id='ampliar_5'><div class='foto' id="foto_5"><img id='img_5'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_5' onclick="javascript:eliminarFoto(5);">{{traduccion_texto_eliminar}}</div>
+				</div>
+		
+				<div class='div_foto' id="div_foto_6">
+					<a class='fancybox-effects-b' id='ampliar_6'><div class='foto' id="foto_6"><img id='img_6'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_6' onclick="javascript:eliminarFoto(6);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_7">
+					<a class='fancybox-effects-b' id='ampliar_7'><div class='foto' id="foto_7"><img id='img_7'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_7' onclick="javascript:eliminarFoto(7);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_8">
+					<a class='fancybox-effects-b' id='ampliar_8'><div class='foto' id="foto_8"><img id='img_8'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_8' onclick="javascript:eliminarFoto(8);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_9">
+					<a class='fancybox-effects-b' id='ampliar_9'><div class='foto' id="foto_9"><img id='img_9'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_9' onclick="javascript:eliminarFoto(9);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+				<div class='div_foto' id="div_foto_10">
+					<a class='fancybox-effects-b' id='ampliar_10'><div class='foto' id="foto_10"><img id='img_10'/></div></a>
+					<div class='div_eliminar_foto' id='div_eliminar_foto_10' onclick="javascript:eliminarFoto(10);">{{traduccion_texto_eliminar}}</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="bases-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #012102;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_bases}}
+			</div>
+			<div class='ir_a_actividades' id='div_cabecera_presentacion_back'>
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="div_bases">
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{bases}}}
+			</div>
+		</div>
+		
+	</div>
+</div>
+</script>
+
+<script id="participa-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #012102;" >
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_participa}}
+			</div>
+			<div class='ir_a_actividades' id='div_cabecera_presentacion_back'>
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<form id="form_participa" name="form_participa" method="post">
+		<div id="div_participa">
+			<div id='div_campo_form_participa'>
+				<input type='text' id='input_nombre' placeholder='{{traduccion_nombre}}'>
+			</div>
+			<div id='div_campo_form_participa'>
+				<input type='text' id='input_telefono' placeholder='{{traduccion_telefono}}'>
+			</div>
+			<div id='div_campo_form_participa'>
+				<input type='text' id='input_email' placeholder='{{traduccion_email}}'>
+			</div>
+			<div id='div_campo_enviar_participa'>
+				<input class='btn_enviar_participa' type='button' value='{{traduccion_enviar}}'>
+			</div>
+		</div>
+		</form>		
+
+	</div>
+</div>
+</script>
+
+<script id="notificaciones-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008928;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_ultimas_notificaciones}}
+			</div>
+			<div id='div_cabecera_presentacion_back' onclick="javascript:ir_a_opcion('#home');">
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="cuerpo_novas">
+			
+			{{#each this.notificaciones}}
+
+			<div id="div_notificacion">
+				<div id="div_titulo_notificacion" onclick="javascript:ir_a_opcion('#notificacion/{{id_notificacion}}');">
+					{{titulo}}
+				</div>
+			</div>
+
+			{{/each}} 
+
+		</div>
+	</div>
+</div>
+</script>
+
+<script id="notificacion-tpl" type="text/x-handlebars-template">
+<div id="global">
+	<div id="contenido">
+		<div id="cabecera_presentacion" style="background-color: #008928;">
+			<div id="div_cabecera_presentacion_texto_vacio">
+				<img class='ir_a_colabora_inicio' src='img/home.png' height="30" onclick="javascript:ir_a_opcion('#home');">
+			</div>
+			<div id="div_cabecera_presentacion_texto">
+				{{traduccion_notificacion}}
+			</div>
+			<div class='ir_a_notificaciones' id='div_cabecera_presentacion_back'>
+				<img width="20px" height="20px" src='./img/FlechaBackTop.png' />
+			</div>
+		</div>
+		<div id="titulo_notificacion">
+			<div id="div_notificacion">
+				<div id="div_titulo_notificacion">
+					{{titulo}}
+				</div>
+			</div>
+		</div>
+		<div id="texto_notificacion">
+			<div id="cuerpo_presentacion_texto_interior">
+				{{{texto}}}
+			</div>
+		</div>
+		
+	</div>
+</div>
+</script>
+
+<div id="dialog-form-categorias" style="display: none;">
+	<div class='categoria_dialog_titulo'>
+		<span id='texto_seleccione_una_categoria_dialog'></span>
+	</div>
+	<div id='div_categorias_dialog'>
+		
+	</div>
+</div>
+
+<div id="dialog-form-subcategorias" style="display: none;">
+	<div class='categoria_dialog_titulo'>
+		<span id='texto_seleccione_una_subcategoria_dialog'></span>
+	</div>
+	<div id='div_subcategorias_dialog'>
+		
+	</div>
+</div>
+
+        <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="lib/handlebars.js"></script>
+		<script type="text/javascript" src="js/HomeView.js"></script>
+		<script type="text/javascript" src="js/ObrasYServiciosView.js"></script>
+		<script type="text/javascript" src="js/PresentacionView.js"></script>
+		<script type="text/javascript" src="js/ConcelleriasView.js"></script>
+		<script type="text/javascript" src="js/ConcelleriaView.js"></script>
+		<script type="text/javascript" src="js/NovasView.js"></script>
+		<script type="text/javascript" src="js/ConvocatoriasView.js"></script>
+		<script type="text/javascript" src="js/ConvocatoriaView.js"></script>
+		<script type="text/javascript" src="js/NovaView.js"></script>
+		<script type="text/javascript" src="js/ContactosView.js"></script>
+		<script type="text/javascript" src="js/ColaboraView.js"></script>
+		<script type="text/javascript" src="js/ColaborainicioView.js"></script>
+		<script type="text/javascript" src="js/ColaboraloginView.js"></script>
+		<script type="text/javascript" src="js/ColaboraregistrarseView.js"></script>
+		<script type="text/javascript" src="js/EventosView.js"></script>
+		<script type="text/javascript" src="js/EventoView.js"></script>
+		<script type="text/javascript" src="js/VisitarView.js"></script>
+		<script type="text/javascript" src="js/MapaView.js"></script>
+		<script type="text/javascript" src="js/ActividadesView.js"></script>
+		<script type="text/javascript" src="js/BasesView.js"></script>
+		<script type="text/javascript" src="js/DocumentacionConvocatoriaView.js"></script>
+		<script type="text/javascript" src="js/ContactosEnlacesView.js"></script>
+		<script type="text/javascript" src="js/ParticipaView.js"></script>
+		<script type="text/javascript" src="js/NotificacionesView.js"></script>
+		<script type="text/javascript" src="js/NotificacionView.js"></script>
+		<script type="text/javascript" src="js/RecordarContrasenaView.js"></script>
+		<script type="text/javascript" src="js/toastr.js"></script>
+		
+		<script src="js/imgcentering.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		
+		
+		<script>
+		
+	       function cambiarPantalla() {
+	    	   var pag_actual = window.location.hash;
+	    	   
+	    	   var arr = pag_actual.split('/');
+	           var vista = arr[0];
+	           
+	           if (pag_actual=='') {
+	        	   vista='#home';
+	           }
+	           
+	           if (vista=='#home') {
+	        	   var aleatorio = Math.random(); 
+		    	   var nueva = vista+"/"+aleatorio;  
+		    	   ir_a_opcion(nueva);
+	           }
+	           if (vista=='#presentacion') {
+	        	   var aleatorio = Math.random(); 
+		    	   var nueva = vista+"/"+aleatorio;
+		    	   alert(nueva);
+		    	   ir_a_opcion(nueva);
+	           }
+	           if (vista=='#nova' || vista=='#evento') {
+	        	   var param_1 = arr[1];
+	        	   var aleatorio = Math.random(); 
+		    	   var nueva = vista+"/"+param_1+"/"+aleatorio;   
+		    	   ir_a_opcion(nueva);
+	           }
+	           if (vista=='#visitar') {
+	        	   
+	        	   if(arr.length==3){
+	        		   var param_1 = arr[1];
+	        		   var param_2 = arr[2];
+		        	   var aleatorio = Math.random(); 
+			    	   var nueva = vista+"/"+param_1+"/"+param_2+"/"+aleatorio;   
+	        	   }
+	        	   else{
+	        		   var aleatorio = Math.random(); 
+			    	   var nueva = vista+"/"+aleatorio;  
+	        	   }
+	        	   
+	        	   ir_a_opcion(nueva);   
+	        	   
+	           }
+	    	   
+	       }
+	       
+	       $(document).ready(function() {
+	    	   
+	    	   $(document).bind('online', function(){onlineEvento()});
+	    	   $(document).bind('offline', function(){offlineEvento()});
+	    	   
+	           $(window).bind("resize", cambiarPantalla);
+	           
+	           cargado();
+	       });
+	       
+	       function adapt_to_orientation() {
+	           var ori = window.orientation;
+	           
+	           var screenwidth = (ori==90 || ori==-90) ? screen.height : screen.width;
+	           var screenheight = (ori==90 || ori==-90) ? screen.width : screen.height;
+				$('meta[name=viewport]').attr('content', 'initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,width='+screenwidth + ',height=' + screenheight);
+			
+				cambiarPantalla();
+	       }   
+	       
+           $(window).bind( 'orientationchange', adapt_to_orientation);
+           
+           function onlineEvento(){
+        	   online = true;
+           }
+			function offlineEvento(){
+				online = false;
+           }
+           
+
+	       
+	       function mostrar_datos_contacto(id_contacto){
+		   		$('#contacto_inicial_'+id_contacto).hide();
+		   		$('#contacto_oculto_'+id_contacto).show("slow");
+		   	}
+		   	
+		   	function ocultar_datos_contacto(id_contacto){
+		   		$('#contacto_oculto_'+id_contacto).hide();
+		   		$('#contacto_inicial_'+id_contacto).show("slow");
+		   	}
+		   	
+		   	toastr.options = {
+	   		  "positionClass": "toast-bottom-center",
+	   		}
+	</script>  
+	
+	<script type="text/javascript" src="./source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="./source/jquery.fancybox.css?v=2.1.5" media="screen" />
+	
+	<script type="text/javascript">
+	
+		$(document).ready(function() {
+			$('.fancybox').fancybox();
+	
+			$(".fancybox-effects-a").fancybox({
+				helpers: {
+					title : {
+						type : 'outside'
+					},
+					overlay : {
+						speedOut : 0
+					}
+				}
+			});
+	
+			$(".fancybox-effects-b").fancybox({
+				openEffect  : 'none',
+				closeEffect	: 'none',
+	
+				helpers : {
+					title : {
+						type : 'over'
+					}
+				}
+			});
+	
+			$(".fancybox-effects-c").fancybox({
+				wrapCSS    : 'fancybox-custom',
+				closeClick : true,
+	
+				openEffect : 'none',
+	
+				helpers : {
+					title : {
+						type : 'inside'
+					},
+					overlay : {
+						css : {
+							'background' : 'rgba(238,238,238,0.85)'
+						}
+					}
+				}
+			});
+	
+			$(".fancybox-effects-d").fancybox({
+				padding: 0,
+	
+				openEffect : 'elastic',
+				openSpeed  : 150,
+	
+				closeEffect : 'elastic',
+				closeSpeed  : 150,
+	
+				closeClick : true,
+	
+				helpers : {
+					overlay : null
+				}
+			});
+	
+		});
+	
+	</script>   
+	
+    </body>
+</html>
